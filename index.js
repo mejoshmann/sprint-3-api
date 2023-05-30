@@ -1,16 +1,20 @@
 const express = require('express');
-const router = express.Router();
+const cors = require('cors');
+const app = express();
+const videoRoutes = require('./routes/videos');
+
+require('dotenv').config();
+const PORT = process.env.PORT;
+
+app.use(cors());
+app.use(express.json());
+app.use('./videos', videoRoutes);
 
 
-router.get('/', (req, res) => {
-
-    fs.readFile('./data/videos.json', 'utf-8', (err, data) => {
-        if (err) {
-            return res.send('error');
-        } else {
-            res.json(JSON.parse(data));
-        }
-    });
+app.get('/', (req, res) => {
+    res.send('<h1>My server</h1>');
 });
 
-module.exports = router;
+app.listen(PORT, () => {
+    console.log(`app running on port ${PORT}`);
+});
