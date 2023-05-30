@@ -8,7 +8,7 @@ const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(express.json());
-app.use('./videos', videoRoutes);
+app.use('/videos', videoRoutes);
 
 
 app.get('/', (req, res) => {
@@ -16,5 +16,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`app running on port ${1080}`);
+    console.log(`app running on port ${PORT}`);
 });
