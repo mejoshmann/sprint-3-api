@@ -2,18 +2,18 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const videoRoutes = require('./routes/videos');
-
+const videoUpload = require('./routes/videos');
 require('dotenv').config();
 const PORT = process.env.PORT;
+// const PORT = 1080;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
+
 app.use('/videos', videoRoutes);
+app.use('/videos', videoUpload);
 
-
-app.get('/', (req, res) => {
-    res.send('<h1>My server</h1>');
-});
 
 app.listen(PORT, () => {
     console.log(`app running on port ${PORT}`);
