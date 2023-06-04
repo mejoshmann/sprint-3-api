@@ -5,7 +5,6 @@ const videoRoutes = require('./routes/videos');
 const videoUpload = require('./routes/videos');
 require('dotenv').config();
 const PORT = process.env.PORT;
-// const PORT = 1080;
 
 app.use(cors());
 app.use(express.json());

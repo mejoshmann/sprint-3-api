@@ -3,6 +3,7 @@ const router = express.Router();
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 
+
 // Get all the videos
 router.get("/", (req, res) => {
   const videoDataJSON = fs.readFileSync("./data/videos.json");
@@ -23,7 +24,6 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   const videoDataJSON = fs.readFileSync("./data/videos.json");
   const videoData = JSON.parse(videoDataJSON);
-
   const videoId = req.params.id;
 
   const selectedVideo = videoData.find((video) => video.id === videoId);
@@ -39,27 +39,22 @@ router.post("/", (req, res) => {
   const videoDataJSON = fs.readFileSync("./data/videos.json");
   const videoData = JSON.parse(videoDataJSON);
   const uploadId = uuidv4();
-  console.log("req.body", req.body)
-
 
   const newVideo = {
     id: uploadId,
     title: req.body.title,
-    image: './public/images/husky.jpg',
+    image: "/public/images/husky.jpg",
     description: req.body.description,
     timestamp: Date.now(),
   };
   videoData.push(newVideo);
-  console.log(newVideo);
-
   const updatedVideoData = JSON.stringify(videoData);
   fs.writeFileSync("./data/videos.json", updatedVideoData);
-
   res.status(201).send("Video uploaded successfully");
 });
 
+// Post a comment 
 router.post("/:id/comments", (req, res) => {
-
   const videoDataJSON = fs.readFileSync("./data/videos.json");
   const videoData = JSON.parse(videoDataJSON);
   const videoId = req.params.id;
