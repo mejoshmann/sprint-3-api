@@ -3,7 +3,6 @@ const router = express.Router();
 const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 
-
 // Get all the videos
 router.get("/", (req, res) => {
   const videoDataJSON = fs.readFileSync("./data/videos.json");
@@ -43,7 +42,8 @@ router.post("/", (req, res) => {
   const newVideo = {
     id: uploadId,
     title: req.body.title,
-    image: "/public/images/husky.jpg",
+    channel: "The Best Channel",
+    image: "/images/husky.jpg",
     description: req.body.description,
     timestamp: Date.now(),
   };
@@ -53,7 +53,7 @@ router.post("/", (req, res) => {
   res.status(201).send("Video uploaded successfully");
 });
 
-// Post a comment 
+// Post a comment
 router.post("/:id/comments", (req, res) => {
   const videoDataJSON = fs.readFileSync("./data/videos.json");
   const videoData = JSON.parse(videoDataJSON);
@@ -71,6 +71,33 @@ router.post("/:id/comments", (req, res) => {
   const commentString = JSON.stringify(videoData);
   fs.writeFileSync("./data/videos.json", commentString);
   res.status(201).send("New Comment posted");
+});
+
+// not working correctly
+router.delete("/:id/comments/commentId", (req, res) => {
+  const videoDataJSON = fs.readFileSync("./data/videos.json");
+  const videoData = JSON.parse(videoDataJSON);
+  const videoId = req.params.id;
+  const commentId = req.params.commentId;
+
+  const selectVideo = videoData.find((video) => video.id === videoId);
+  if (!selectVideo) {
+    res.status(404).send("Video not found");
+    return;
+  }
+
+  const commentIndex = selectedVideo.comments.findIndex(
+    (comment) => comment.id === commentId
+  );
+  if (commentIndex === -1) {
+    res.status(404).send("Comment not found");
+  }
+
+  selectedVideo.comments.splice(commentIndex, 1);
+
+  const updatedVideoData = JSON.stringify(videoData);
+  fs.writeFileSync("./data/videos.json", updatedVideoData);
+  res.send.status(200).send("Comment deleted successfully");
 });
 
 module.exports = router;
